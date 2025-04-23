@@ -1,0 +1,21 @@
+[package]
+name = "parser"
+version = "0.1.0"
+edition = "2021"
+description = "Network packet parser for netquery"
+
+[dependencies]
+sniffer = { path = "../sniffer" }
+etherparse = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+flume = { workspace = true }
+hashbrown = { workspace = true }
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "parser_bench"
+harness = false

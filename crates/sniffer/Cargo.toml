@@ -1,0 +1,16 @@
+[package]
+name = "sniffer"
+version = "0.1.0"
+edition = "2021"
+description = "Network packet capture module for netquery"
+
+[dependencies]
+pcap = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+flume = { workspace = true }
+
+[dev-dependencies]
+tokio-test = "0.4"

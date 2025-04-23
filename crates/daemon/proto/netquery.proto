@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package netquery;
+
+service NetQuery {
+  // Query network traffic with natural language
+  rpc Ask (AskRequest) returns (AskResponse);
+  
+  // Get metrics about the running service
+  rpc GetMetrics (MetricsRequest) returns (MetricsResponse);
+  
+  // Get current status of the service
+  rpc GetStatus (StatusRequest) returns (StatusResponse);
+  
+  // Stream thinking events during multi-turn query processing
+  rpc AskStream (AskRequest) returns (stream ThinkingEvent);
+}
+
+message AskRequest {
+  string query = 1;
+  string language = 2; // Optional: "en" or "fr", defaults to "en"
+}
+
+message AskResponse {
+  string result = 1;
+  repeated FlowData flows = 2;
+  int64 query_time_ms = 3;
+  int32 total_flows = 4;
+}
+
+message FlowData {
+  FlowKey key = 1;
+  FlowStats stats = 2;
+}
+
+message FlowKey {
+  oneof key_type {
+    IpPair ip_pair = 1;
+    IpPortPair ip_port_pair = 2;
+    IpAddr ip = 3;
+    uint32 port = 4;
+  }
+}
+
+message IpPair {
+  IpAddr src = 1;
+  IpAddr dst = 2;
+}
+
+message IpPortPair {
+  IpEndpoint src = 1;
+  IpEndpoint dst = 2;
+}
+
+message IpAddr {
+  oneof ip_type {
+    bytes ipv4 = 1;
+    bytes ipv6 = 2;
+  }
+}
+
+message IpEndpoint {
+  IpAddr addr = 1;
+  uint32 port = 2;
+}
+
+message FlowStats {
+  uint64 bytes = 1;
+  uint64 packets = 2;
+  int64 start_time = 3; // Unix timestamp in seconds
+  int64 last_time = 4;  // Unix timestamp in seconds
+}
+
+message MetricsRequest {
+}
+
+message MetricsResponse {
+  uint64 packets_captured = 1;
+  uint64 packets_dropped = 2;
+  uint64 packets_processed = 3;
+  uint64 current_window_count = 4;
+  uint64 total_flows = 5;
+  uint64 memory_usage_bytes = 6;
+}
+
+message StatusRequest {
+}
+
+message StatusResponse {
+  enum Status {
+    UNKNOWN = 0;
+    STARTING = 1;
+    RUNNING = 2;
+    DEGRADED = 3;
+    STOPPING = 4;
+    STOPPED = 5;
+  }
+  
+  Status status = 1;
+  string version = 2;
+  int64 uptime_seconds = 3;
+  string interface = 4;
+}
+
+// Event for multi-turn thinking process
+message ThinkingEvent {
+  string action = 1;      // The action being performed (es_search, es_agg, finish)
+  string step_info = 2;   // Description of the current thinking step
+  int32 step_number = 3;  // Current step number
+  int32 total_steps = 4;  // Total number of steps taken so far
+}

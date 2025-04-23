@@ -1,0 +1,22 @@
+[package]
+name = "agent_core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+llm = { workspace = true }
+reqwest = { version = "0.11", features = ["json"] }
+uuid = { version = "1.16", features = ["v4", "serde"] }
+backoff = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
+async-trait = "0.1"
+
+[dev-dependencies]
+tokio-test = "0.4"
+mockito = "1.2"
