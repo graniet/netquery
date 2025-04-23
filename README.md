@@ -6,6 +6,8 @@
 
 NetQuery is a Rust-based daemon (`netqueryd`) that listens to live network traffic (layers 1-4), maintains rolling matrices of flows in memory, and exposes a natural-language "ask" interface (CLI + gRPC).
 
+> **Note:** This is an initial draft of NetQuery. Local LLM models and enhanced features will be added soon.
+
 
 # Demo
 
